@@ -1,0 +1,30 @@
+On the data set of foursqure, When the k is: 20, the K is: 140, the recall is: NaN
+On the data set of foursqure, When the k is: 20, the K is: 140, the recall is: NaN
+baseall: On the data set of foursqure, When the k is: 20, the K is: 140, the recall is: 0.05203354675804852
+On the data set of foursqure, When the k is: 18, the K is: 140, the recall is: NaN
+On the data set of foursqure, When the k is: 18, the K is: 140, the recall is: NaN
+baseall: On the data set of foursqure, When the k is: 18, the K is: 140, the recall is: 0.048606727387501124
+On the data set of foursqure, When the k is: 16, the K is: 140, the recall is: NaN
+On the data set of foursqure, When the k is: 16, the K is: 140, the recall is: NaN
+baseall: On the data set of foursqure, When the k is: 16, the K is: 140, the recall is: 0.04581116421679141
+On the data set of foursqure, When the k is: 14, the K is: 140, the recall is: NaN
+On the data set of foursqure, When the k is: 14, the K is: 140, the recall is: NaN
+baseall: On the data set of foursqure, When the k is: 14, the K is: 140, the recall is: 0.042474524303363695
+On the data set of foursqure, When the k is: 12, the K is: 140, the recall is: NaN
+On the data set of foursqure, When the k is: 12, the K is: 140, the recall is: NaN
+baseall: On the data set of foursqure, When the k is: 12, the K is: 140, the recall is: 0.039814230318333484
+On the data set of foursqure, When the k is: 10, the K is: 140, the recall is: NaN
+On the data set of foursqure, When the k is: 10, the K is: 140, the recall is: NaN
+baseall: On the data set of foursqure, When the k is: 10, the K is: 140, the recall is: 0.0350798088195509
+On the data set of foursqure, When the k is: 8, the K is: 140, the recall is: NaN
+On the data set of foursqure, When the k is: 8, the K is: 140, the recall is: NaN
+baseall: On the data set of foursqure, When the k is: 8, the K is: 140, the recall is: 0.03318604022003788
+On the data set of foursqure, When the k is: 6, the K is: 140, the recall is: NaN
+On the data set of foursqure, When the k is: 6, the K is: 140, the recall is: NaN
+baseall: On the data set of foursqure, When the k is: 6, the K is: 140, the recall is: 0.029623951663810984
+On the data set of foursqure, When the k is: 4, the K is: 140, the recall is: NaN
+On the data set of foursqure, When the k is: 4, the K is: 140, the recall is: NaN
+baseall: On the data set of foursqure, When the k is: 4, the K is: 140, the recall is: 0.026557850121742266
+On the data set of foursqure, When the k is: 2, the K is: 140, the recall is: NaN
+On the data set of foursqure, When the k is: 2, the K is: 140, the recall is: NaN
+baseall: On the data set of foursqure, When the k is: 2, the K is: 140, the recall is: 0.022003787537199025

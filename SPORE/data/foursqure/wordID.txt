@@ -1,0 +1,242 @@
+Arts & Entertainment|Arcade	0
+Arts & Entertainment|Art Gallery	1
+Arts & Entertainment|Bowling Alley	2
+Arts & Entertainment|Casino	3
+Arts & Entertainment|Comedy Club	4
+Arts & Entertainment|General Entertainment	5
+Arts & Entertainment|Movie Theater	6
+Arts & Entertainment|Museum	7
+Arts & Entertainment|Music Venue	8
+Arts & Entertainment|Performing Arts Venue	9
+Arts & Entertainment|Pool Hall	10
+Arts & Entertainment|Racetrack	11
+Arts & Entertainment|Stadium	12
+Arts & Entertainment|Strip Club	13
+Arts & Entertainment|Theme Park	14
+Arts & Entertainment|Water Park	15
+Arts & Entertainment|Zoo or Aquarium	16
+College & University|College Academic Building	17
+College & University|College Administrative Building	18
+College & University|College Auditorium	19
+College & University|College Bookstore	20
+College & University|College Cafeteria	21
+College & University|College Classroom	22
+College & University|College Dorm	23
+College & University|College Gym	24
+College & University|College Lab	25
+College & University|College Library	26
+College & University|College Quad	27
+College & University|College Rec Center	28
+College & University|College Stadium	29
+College & University|College Theater	30
+College & University|Community College	31
+College & University|Fraternity House	32
+College & University|General College & University	33
+College & University|Law School	34
+College & University|Medical School	35
+College & University|Sorority House	36
+College & University|Student Center	37
+College & University|Trade School	38
+College & University|University	39
+Food|African Restaurant	40
+Food|American Restaurant	41
+Food|Arepa Restaurant	42
+Food|Argentinian Restaurant	43
+Food|Asian Restaurant	44
+Food|Australian Restaurant	45
+Food|BBQ Joint	46
+Food|Bagel Shop	47
+Food|Bakery	48
+Food|Brazilian Restaurant	49
+Food|Breakfast Spot	50
+Food|Brewery	51
+Food|Burger Joint	52
+Food|Burrito Place	53
+Food|Café	54
+Food|Cajun or Creole Restaurant	55
+Food|Caribbean Restaurant	56
+Food|Chinese Restaurant	57
+Food|Coffee Shop	58
+Food|Cuban Restaurant	59
+Food|Cupcake Shop	60
+Food|Deli or Bodega	61
+Food|Dessert Shop	62
+Food|Dim Sum Restaurant	63
+Food|Diner	64
+Food|Donut Shop	65
+Food|Dumpling Restaurant	66
+Food|Eastern European Restaurant	67
+Food|Ethiopian Restaurant	68
+Food|Falafel Restaurant	69
+Food|Fast Food Restaurant	70
+Food|Food Court	71
+Food|Food Truck	72
+Food|French Restaurant	73
+Food|Fried Chicken Joint	74
+Food|Gastropub	75
+Food|German Restaurant	76
+Food|Gluten-free Restaurant	77
+Food|Greek Restaurant	78
+Food|Hot Dog Joint	79
+Food|Ice Cream Shop	80
+Food|Indian Restaurant	81
+Food|Italian Restaurant	82
+Food|Japanese Restaurant	83
+Food|Juice Bar	84
+Food|Korean Restaurant	85
+Food|Latin American Restaurant	86
+Food|Mac & Cheese Joint	87
+Food|Malaysian Restaurant	88
+Food|Mediterranean Restaurant	89
+Food|Mexican Restaurant	90
+Food|Middle Eastern Restaurant	91
+Food|Molecular Gastronomy Restaurant	92
+Food|Moroccan Restaurant	93
+Food|New American Restaurant	94
+Food|Pizza Place	95
+Food|Ramen or Noodle House	96
+Food|Restaurant	97
+Food|Salad Place	98
+Food|Sandwich Place	99
+Food|Scandinavian Restaurant	100
+Food|Seafood Restaurant	101
+Food|Snack Place	102
+Food|Soup Place	103
+Food|South American Restaurant	104
+Food|Southern or Soul Food Restaurant	105
+Food|Spanish Restaurant	106
+Food|Steakhouse	107
+Food|Sushi Restaurant	108
+Food|Swiss Restaurant	109
+Food|Taco Place	110
+Food|Tapas Restaurant	111
+Food|Tea Room	112
+Food|Thai Restaurant	113
+Food|Vegetarian or Vegan Restaurant	114
+Food|Vietnamese Restaurant	115
+Food|Winery	116
+Food|Wings Joint	117
+Great Outdoors|Baseball Field	118
+Great Outdoors|Basketball Court	119
+Great Outdoors|Beach	120
+Great Outdoors|Bridge	121
+Great Outdoors|Campground	122
+Great Outdoors|Cemetery	123
+Great Outdoors|Dog Run	124
+Great Outdoors|Farm	125
+Great Outdoors|Field	126
+Great Outdoors|Garden	127
+Great Outdoors|Golf Course	128
+Great Outdoors|Harbor or Marina	129
+Great Outdoors|Hiking Trail	130
+Great Outdoors|Hot Spring	131
+Great Outdoors|Lake	132
+Great Outdoors|Lighthouse	133
+Great Outdoors|Other Great Outdoors	134
+Great Outdoors|Park	135
+Great Outdoors|Playground	136
+Great Outdoors|Plaza	137
+Great Outdoors|Pool	138
+Great Outdoors|Scenic Lookout	139
+Great Outdoors|Sculpture Garden	140
+Great Outdoors|Skate Park	141
+Great Outdoors|Skating Rink	142
+Great Outdoors|Ski Area	143
+Great Outdoors|Soccer Field	144
+Great Outdoors|Vineyard	145
+Home, Work, Other|Apartment Building	146
+Home, Work, Other|Building	147
+Home, Work, Other|Convention Center	148
+Home, Work, Other|Event Space	149
+Home, Work, Other|Government Building	150
+Home, Work, Other|Gym or Fitness Center	151
+Home, Work, Other|Home	152
+Home, Work, Other|Library	153
+Home, Work, Other|Medical Center	154
+Home, Work, Other|Office	155
+Home, Work, Other|Parking Garage	156
+Home, Work, Other|Post Office	157
+Home, Work, Other|Religious Center	158
+Home, Work, Other|School	159
+Home, Work, Other|Voting Booth	160
+Nightlife Spot|Bar	161
+Nightlife Spot|Beer Garden	162
+Nightlife Spot|Brewery	163
+Nightlife Spot|Cocktail Bar	164
+Nightlife Spot|Dive Bar	165
+Nightlife Spot|Gay Bar	166
+Nightlife Spot|Hookah Bar	167
+Nightlife Spot|Hotel Bar	168
+Nightlife Spot|Karaoke Bar	169
+Nightlife Spot|Lounge	170
+Nightlife Spot|Music Venue	171
+Nightlife Spot|Nightclub	172
+Nightlife Spot|Other Nightlife	173
+Nightlife Spot|Pub	174
+Nightlife Spot|Sake Bar	175
+Nightlife Spot|Speakeasy	176
+Nightlife Spot|Sports Bar	177
+Nightlife Spot|Strip Club	178
+Nightlife Spot|Whisky Bar	179
+Nightlife Spot|Wine Bar	180
+Shop|Antique Shop	181
+Shop|Arts & Crafts Store	182
+Shop|Automotive Shop	183
+Shop|Bank	184
+Shop|Bike Shop	185
+Shop|Board Shop	186
+Shop|Bookstore	187
+Shop|Bridal Shop	188
+Shop|Candy Store	189
+Shop|Clothing Store	190
+Shop|Convenience Store	191
+Shop|Cosmetics Shop	192
+Shop|Department Store	193
+Shop|Design Studio	194
+Shop|Drugstore or Pharmacy	195
+Shop|Flea Market	196
+Shop|Flower Shop	197
+Shop|Food and Drink Shop	198
+Shop|Furniture or Home Store	199
+Shop|Gaming Cafe	200
+Shop|Gas Station or Garage	201
+Shop|Gift Shop	202
+Shop|Hardware Store	203
+Shop|High Tech Outlet	204
+Shop|Hobby Shop	205
+Shop|Internet Cafe	206
+Shop|Jewelry Store	207
+Shop|Laundromat or Dry Cleaner	208
+Shop|Mall	209
+Shop|Miscellaneous Shop	210
+Shop|Music Store	211
+Shop|Paper or Office Supplies Store	212
+Shop|Pet Store	213
+Shop|Record Shop	214
+Shop|Rental Car Location	215
+Shop|Salon or Barbershop	216
+Shop|Smoke Shop	217
+Shop|Spa or Massage Parlor	218
+Shop|Sporting Goods Shop	219
+Shop|Tanning Salon	220
+Shop|Tattoo Parlor	221
+Shop|Thrift or Vintage Store	222
+Shop|Toy or Game Store	223
+Shop|Video Game Store	224
+Shop|Video Store	225
+Travel Spot|Airport	226
+Travel Spot|Bed & Breakfast	227
+Travel Spot|Boat or Ferry	228
+Travel Spot|Bus Station	229
+Travel Spot|Embassy or Consulate	230
+Travel Spot|General Travel	231
+Travel Spot|Highway or Road	232
+Travel Spot|Hostel	233
+Travel Spot|Hotel	234
+Travel Spot|Light Rail	235
+Travel Spot|Resort	236
+Travel Spot|Rest Area	237
+Travel Spot|Subway	238
+Travel Spot|Taxi	239
+Travel Spot|Train Station	240
+UNKNOWN	241
