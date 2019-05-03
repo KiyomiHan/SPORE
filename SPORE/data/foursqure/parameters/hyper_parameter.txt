@@ -1,9 +1,9 @@
 U: 1250
 V: 9764
-K: 140
+K: 200
 W: 242
 k: 5
-ITERATIONS: 200
+ITERATIONS: 280
 SAMPLE_LAG: 5
 BURN_IN: 230
 outputPath: data/foursqure/parameters/

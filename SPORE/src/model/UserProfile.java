@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class UserProfile {
 	private int[] spatialItems;
 //	private int[] locations;
+	private int[] times;
 	private ArrayList<Integer>[] contents;
 	private ArrayList<Integer>[] sequences;
 	private int[] topics;
@@ -19,6 +20,7 @@ public class UserProfile {
 	public UserProfile(int size) {
 		this.spatialItems = new int[size];
 //		this.locations = new int[size];
+		this.times = new int[size];
 		this.contents = new ArrayList[size];
 		for (int i = 0; i < size; i++) {
 			contents[i] = new ArrayList<Integer>();
@@ -44,6 +46,17 @@ public class UserProfile {
 		this.sequences[this.asize]=sequence;
 		this.asize++;
 	}
+	public void addOneRecord(int spatialItem, ArrayList<Integer> sequence,
+			ArrayList<Integer> content, int curtime) {
+//		public void addOneRecord(int spatialItem, int location, ArrayList<Integer> sequence,
+//				ArrayList<Integer> content) {
+		this.spatialItems[this.asize] = spatialItem;
+//		this.locations[this.asize] = location;
+		this.contents[this.asize] = content;
+		this.sequences[this.asize]=sequence;
+		this.times[this.asize]=curtime;
+		this.asize++;
+	}
 
 	public int getSize() {
 		return this.asize;
@@ -67,6 +80,10 @@ public class UserProfile {
 
 	public ArrayList<Integer> getSeq(int i){
 		return this.sequences[i];
+	}
+	// add time by lyh
+	public int getT(int i) {
+		return this.times[i];
 	}
 
 	public double getAlphad(int i) {

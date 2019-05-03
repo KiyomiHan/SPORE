@@ -168,13 +168,13 @@ public class DiffFunctionTheta0 implements DiffFunction {
 				int u = pair.getFirst();
 				int v = pair.getSec();
 				int z=up.getZ(v);
-//				int l=up.getL(v);
+				int t=up.getT(v);
 				ArrayList<Integer> seq=up.getSeq(v);
 				double alphad=0;
 				double alphan=0;
 				double[] alphans=new double[Paras.K];
 				for(int zz=0;zz<Paras.K;zz++){
-					double alphant=this.getAlphaN(u, zz, seq);
+					double alphant=this.getAlphaN(u, zz, seq, t);
 //					double alphant=this.getAlphaN(u, l, zz, seq);
 					alphans[zz]=alphant;
 					if(zz==z){
@@ -187,20 +187,29 @@ public class DiffFunctionTheta0 implements DiffFunction {
 				up.setAlphans(v, alphans);
 			}
 		}
-		
-		public double getAlphaN(int u, int z, ArrayList<Integer> seq){
-//			public double getAlphaN(int u, int l, int z, ArrayList<Integer> seq){
-			double alphan=0;
-			//infer alphan
-			double exp=0;
-//			exp+=(theta0[z]+sp.thetauser[u][z]+sp.thetanative[l][z]);
-			exp+=(theta0[z]+sp.thetauser[u][z]);
+		public double getAlphaN(int u, int z, ArrayList<Integer> seq, int t) {
+			double alphan = 0;
+			double exp = 0;
+			exp += (theta0[z] + sp.thetauser[u][z] + sp.thetatime[t][z]);
 			for(int pv:seq){
 				exp+=sp.thetapre[pv][z];
 			}
-			alphan=Math.exp(exp);
+			alphan = Math.exp(exp);
 			return alphan;
 		}
+//		public double getAlphaN(int u, int z, ArrayList<Integer> seq){
+////			public double getAlphaN(int u, int l, int z, ArrayList<Integer> seq){
+//			double alphan=0;
+//			//infer alphan
+//			double exp=0;
+////			exp+=(theta0[z]+sp.thetauser[u][z]+sp.thetanative[l][z]);
+//			exp+=(theta0[z]+sp.thetauser[u][z]);
+//			for(int pv:seq){
+//				exp+=sp.thetapre[pv][z];
+//			}
+//			alphan=Math.exp(exp);
+//			return alphan;
+//		}
 		
 	}
 }

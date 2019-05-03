@@ -24,6 +24,8 @@ public class RecommenderBaseAll implements Runnable {
 		for (TestCases query : joblist) {
 			int qid=query.getQueryID();
 			int uq = query.getUq();
+			// add time by lyh
+			int tq = query.getTq();
 			int targetV = query.getTargetV();
 			ArrayList<Integer> Pq = query.getPq();
 			// for targetV and unrated items, we infer ratings for them
@@ -32,8 +34,10 @@ public class RecommenderBaseAll implements Runnable {
 			double[] wqzs=new double[Paras.K];
 			for (int z = 0; z < Paras.K; z++) {
 				double ratingz = 0;
-				ratingz = sp.inferAlpha(uq, z, Pq);
+//				ratingz = sp.inferAlpha(uq, z, Pq);
 //				ratingz = sp.inferAlpha(uq, lq, z, Pq);
+				// add time by lyh
+				ratingz = sp.inferAlpha(uq, tq, z, Pq);
 				wqzs[z]=ratingz;
 				ratingz*=sp.Fzvs[z][targetV];
 				ratingt += ratingz;

@@ -12,7 +12,8 @@ public class Paras {
     public static int countU=1250;
     public static int countV=9764;
     public static int k = 5;
-    public static int K = 140;
+    public static int K = 200;
+    public static int T = 12;
     //public static String dataset="synthetic";
     public static String dataset="foursqure";
 //    public static int countR;

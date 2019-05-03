@@ -26,8 +26,8 @@ import edu.stanford.nlp.optimization.QNMinimizer;
 public class SPORE {
 	private QNMinimizer qnm;
 	// 280 5 230
-	private static SPORE sp = new SPORE("data/" + Paras.dataset + "/train_4.txt",
-			"data/" + Paras.dataset + "/parameters/", 100, 5, 230);
+	private static SPORE sp = new SPORE("data/" + Paras.dataset + "/train_5.txt",
+			"data/" + Paras.dataset + "/parameters/", 280, 5, 230);
 
 	public static SPORE getObject() {
 		return sp;
@@ -37,6 +37,7 @@ public class SPORE {
 	public int V;// the number of spatial items(corresponds to placetID)
 	public int W;// the number of vocabulary
 	public int N;// the number of overall activities
+	public int T;// add time; the number of Time class
 	// public int R;// the number of locations(corresponds to the locationID)
 	public int K;
 	public HashMap<Integer, UserProfile> user_items;
@@ -59,6 +60,7 @@ public class SPORE {
 	private double extSmall = 0.9;
 	public double[] theta0;// the global distribution over topics
 	public double[][] thetauser;// the distribution over topics for each user
+	public double[][] thetatime;//the distribution over topics for each time class
 	public double[] phi0; // the global distribution over words
 	public double[][] phitopic;// the distribution over words for each topic;
 	public double[][] psitopic;// the distribution over spatial items for each
@@ -75,13 +77,20 @@ public class SPORE {
 							// contains the spatial item v
 	public ArrayList<Pair>[] DPv; // the set of activities containing the
 									// spatial item v
+	// add time by lyh
+	public ArrayList<Pair>[] DPt;// the set of activities containing the time t
+	
 	public int[][] duz;// the number of activities assigned to each topic by
 						// each user
-	// public int[][] dlnz;// the number of activities assigned to
-	// each topic at
+	// add time by lyh
+	public int[][] dtz; // the number of activities assigned to each topic at
+	// each time
+	//public int[][] dlnz;// the number of activities assigned to each topic at
 	// each location assigned by natives
+	
 	public int[][] dzw;// the number of activities where the word w is assigned
 						// to the topic z
+	
 	public int[] dz;// the number of activities assigned to each topic
 	public int[][] dzv;
 	public int[] dw;
@@ -101,6 +110,7 @@ public class SPORE {
 	public int SAMPLE_LAG;
 	public int BURN_IN;
 	public String outputPath;
+	
 
 	private SPORE(String trainFile, String path_output_model, int ITERATIONS, int SAMPLE_LAG, int BURN_IN) {
 		this.qnm = new QNMinimizer(10, true);
@@ -115,6 +125,10 @@ public class SPORE {
 		// this.R = Paras.countR;
 		this.N = stas[1];
 		this.K = Paras.K;
+		
+		// add time by lyh
+		this.T = Paras.T;
+		
 		this.outputPath = path_output_model;
 		this.ITERATIONS = ITERATIONS;
 		this.SAMPLE_LAG = SAMPLE_LAG;
@@ -128,7 +142,10 @@ public class SPORE {
 		this.psi0 = new double[this.V];
 		this.psitopic = new double[K][this.V];
 		// this.thetanative = new double[this.R][K];
-
+		
+        // add time
+		this.thetatime = new double[T][K];
+		
 		dw = new int[this.W];
 		dv = new int[V];
 		du = new int[U];
@@ -142,14 +159,23 @@ public class SPORE {
 		// for (int u = 0; u < this.U; u++) {
 		// this.Dln[u] = new ArrayList<Pair>();
 		// }
-		this.DPv = new ArrayList[this.V];
-		for (int v = 0; v < this.V; v++) {
-			this.DPv[v] = new ArrayList<Pair>();
-		}
 		// this.DR = new ArrayList[this.R];
 		// for (int r = 0; r < this.R; r++) {
 		// this.DR[r] = new ArrayList<Integer>();
 		// }
+		
+		this.DPv = new ArrayList[this.V];
+		for (int v = 0; v < this.V; v++) {
+			this.DPv[v] = new ArrayList<Pair>();
+		}
+		
+		// add time by lyh
+		this.DPt = new ArrayList[this.T];
+		for (int t = 0; t < this.T; t++) {
+			this.DPt[t] = new ArrayList<Pair>();
+		}
+		
+		
 		this.Duv = new HashSet[this.U];
 		for (int u = 0; u < this.U; u++) {
 			this.Duv[u] = new HashSet<Integer>();
@@ -172,6 +198,8 @@ public class SPORE {
 				String[] terms = str.split("\t");
 				int uid = Integer.parseInt(terms[0]);
 				this.du[uid]++;
+				// add time by lyh
+				int curtime = Integer.parseInt(terms[4]);
 				// int location = Integer.parseInt(terms[9]);
 				int spatialItem = Integer.parseInt(terms[5]);
 				// this.itemlocations[spatialItem] = location;
@@ -204,12 +232,16 @@ public class SPORE {
 				HashSet<Integer> duvv = this.Duv[uid];
 				if (!duvv.contains(spatialItem))
 					duvv.add(spatialItem);
-				user_items.get(uid).addOneRecord(spatialItem, seq, contents);
+				user_items.get(uid).addOneRecord(spatialItem, seq, contents, curtime);
 				Pair p;
 				int index = user_items.get(uid).getSize() - 1;
 				p = new Pair(uid, index);
 				// this.Dln[location].add(p);
 				// this.dln[location]++;
+				 
+				// add time by lyh
+				this.DPt[curtime].add(p);
+				
 				for (int pv : seq) {
 					this.DPv[pv].add(p);
 				}
@@ -227,6 +259,8 @@ public class SPORE {
 
 	public void initializeCount() {
 		this.duz = new int[this.U][K];
+		// add time by lyh
+		this.dtz = new int[this.T][K];
 		// this.dlnz = new int[this.R][K];
 		this.dzw = new int[K][this.W];
 		this.dz = new int[K];
@@ -252,10 +286,8 @@ public class SPORE {
 		// assign each twitter randomly to a topic
 		for (int i = 0; i < U; i++) {
 			UserProfile up = this.user_items.get(i);
-			// System.out.println(i);
-			int length = up.getSize();
 
-			for (int j = 0; j < length; j++) {
+			for (int j = 0; j < up.getSize(); j++) {
 				int ran = (int) (Math.random() * (K));
 				this.dz[ran]++;
 				up.setZ(j, ran);
@@ -265,7 +297,8 @@ public class SPORE {
 				}
 				// update the statistics related to topic assignment
 				this.duz[i][ran]++;
-				// this.dtz[up.getT(j)][ran]++;
+				//add time
+				this.dtz[up.getT(j)][ran]++;
 				// update dlz for each level
 				// int location = up.getL(j);
 				// this.dlnz[location][ran]++;
@@ -283,6 +316,7 @@ public class SPORE {
 				this.theta0[i] = Math.log(sp.extSmall);
 			else
 				this.theta0[i] = Math.log(this.dz[i]);
+			
 			for (int j = 0; j < this.W; j++) {
 				double value = this.dzw[i][j];
 				if (value == 0) {
@@ -291,30 +325,17 @@ public class SPORE {
 				this.phitopic[i][j] = Math.log(value) - this.phi0[j];
 			}
 			for (int j = 0; j < this.V; j++) {
-				// this.psitopic[i][j] = (double) (this.dzv[i][j] - dv[j]) /
-				// normalz;
 				double value = this.dzv[i][j];
 				if (value == 0) {
 					value = sp.extSmall;
 				}
 				this.psitopic[i][j] = Math.log(value) - this.psi0[j];
 				value = this.dvzp[j][i];
-				double sumpre = 0.0;
-				
 				if (value == 0) {
 					value = sp.extSmall;
 				}
 				this.thetapre[j][i] = Math.log(value);
 				
-//				for(int ss=0; ss<this.K; ss++) {
-//					if (this.dvzp[j][ss] == 0) {
-//						sumpre += sp.extSmall;
-//					}
-//					else {
-//						sumpre += this.dvzp[j][ss];
-//					}
-//				}
-//				this.thetapre[j][i] = Math.log(value) - Math.log(sumpre);
 			}
 			for (int j = 0; j < this.U; j++) {
 				double value = this.duz[j][i];
@@ -322,16 +343,13 @@ public class SPORE {
 					value = sp.extSmall;
 				}
 				this.thetauser[j][i] = Math.log(value); 
-//				double sumuser = 0.0;
-//				for(int ss=0; ss<this.K; ss++) {
-//					if ( this.duz[j][ss] == 0) {
-//						sumuser += sp.extSmall;
-//					}
-//					else {
-//						sumuser += this.duz[j][ss];
-//					}
-//				}
-//				this.thetauser[j][i] = Math.log(value) - Math.log(sumuser);
+			}
+			for (int j = 0; j < this.T; j++) {
+				double value = this.duz[j][i];
+				if (value == 0) {
+					value = sp.extSmall;
+				}
+				this.thetatime[j][i] = Math.log(value); 
 			}
 		}
 		// for (int l = 0; l < Paras.countR; l++) {
@@ -350,6 +368,8 @@ public class SPORE {
 		// remove the previous topic assignment and modify the statistics
 		UserProfile user = this.user_items.get(i);
 		// int location = user.getL(j);
+		// add time by lyh
+		int curtime = user.getT(j);
 		int topic = user.getZ(j);
 		int item = user.getV(j);
 		ArrayList<Integer> seq = user.getSeq(j);
@@ -363,7 +383,7 @@ public class SPORE {
 			double exp = 0;
 			// exp = this.theta0[z] + this.thetauser[i][z] +
 			// this.thetanative[location][z];
-			exp = this.theta0[z] + this.thetauser[i][z];
+			exp = this.theta0[z] + this.thetauser[i][z] + this.thetatime[curtime][z];
 			for (int pv : seq) {
 				exp += this.thetapre[pv][z];
 			}
@@ -394,6 +414,9 @@ public class SPORE {
 		this.dz[topicnew]++;
 		this.dzv[topic][item]--;
 		this.dzv[topicnew][item]++;
+		// add time by lyh
+		this.dtz[curtime][topic]--;
+		this.dtz[curtime][topicnew]++;
 		// this.dlnz[location][topic]--;
 		// this.dlnz[location][topicnew]++;
 		for (int pv : seq) {
@@ -509,29 +532,50 @@ public class SPORE {
 
 	public void updateThetaPreSingleP() {
 		this.thetaprecopy = (double[][]) this.thetapre.clone();
+		
 		QNMinimizer qnm = new QNMinimizer(10, true);
 		qnm.terminateOnRelativeNorm(true);
 		qnm.terminateOnNumericalZero(true);
-		qnm.terminateOnAverageImprovement(true);
-//		qnm.terminateOnEvalImprovement(true);
+		qnm.terminateOnAverageImprovement(true);	
+		qnm.shutUp();
 		
-//		qnm.shutUp();
 		for (int v = 0; v < sp.V; v++) {
 			if (this.DPv[v].isEmpty()) {
 				continue;
 			}
 			DiffFunctionThetaPre df = new DiffFunctionThetaPre(v);
 			double[] temp = sp.thetapre[v];
-//			System.out.println("cur vid:");
-//			System.out.println(v);
-//			for(int i=0; i<sp.K; i++) {
-//				System.out.println(temp[i]);
-//			}
+
 			temp = qnm.minimize(df, Paras.termate, temp, 1000);
-//			System.out.println("output");
+
 			for (int z = 0; z < Paras.K; z++) {
 				sp.thetapre[v][z] = temp[z];
-//				System.out.println(temp[z]);
+
+			}
+			
+		}
+	}
+	
+	public void updateThetaTime() {
+		
+		QNMinimizer qnm = new QNMinimizer(10, true);
+		qnm.terminateOnRelativeNorm(true);
+		qnm.terminateOnNumericalZero(true);
+		qnm.terminateOnAverageImprovement(true);	
+		qnm.shutUp();
+		
+		for (int t = 0; t < sp.T; t++) {
+			if (this.DPt[t].isEmpty()) {
+				continue;
+			}
+			DiffFunctionThetaTime df = new DiffFunctionThetaTime(t);
+			double[] temp = sp.thetatime[t];
+
+			temp = qnm.minimize(df, Paras.termate, temp, 1000);
+
+			for (int z = 0; z < Paras.K; z++) {
+				sp.thetatime[t][z] = temp[z];
+
 			}
 			
 		}
@@ -550,6 +594,7 @@ public class SPORE {
 		qnm.terminateOnRelativeNorm(true);
 		qnm.terminateOnNumericalZero(true);
 		qnm.terminateOnAverageImprovement(true);
+		qnm.shutUp();
 		for (int z = 0; z < K; z++) {
 			DiffFunctionPhitopic df = new DiffFunctionPhitopic(z);
 			this.phitopic[z] = qnm.minimize(df, Paras.termate, this.phitopic[z],1000);
@@ -566,11 +611,11 @@ public class SPORE {
 
 	public void updatePsiTopic() {
 		System.out.println("update psi topic..........");
-		// this.qnm.shutUp();
 		QNMinimizer qnm = new QNMinimizer(10, true);
 		qnm.terminateOnRelativeNorm(true);
 		qnm.terminateOnNumericalZero(true);
 		qnm.terminateOnAverageImprovement(true);
+		qnm.shutUp();
 		for (int z = 0; z < K; z++) {
 			DiffFunctionPsitopic df = new DiffFunctionPsitopic(z);
 			this.psitopic[z] = qnm.minimize(df, Paras.termate, this.psitopic[z],10000);
@@ -888,6 +933,9 @@ public class SPORE {
 				// userID/tweetID/lat/lon/time/placeID/contentInfo/state/seq/locationID/unvisitedItems
 				int u = Integer.parseInt(terms[0]);
 				// int l = Integer.parseInt(terms[9]);
+				// add time by lyh
+				int t = Integer.parseInt(terms[4]);
+				
 				int targetV = Integer.parseInt(terms[5]);
 				String contentsS = terms[6];
 				StringTokenizer st1 = new StringTokenizer(contentsS, "|");
@@ -905,7 +953,9 @@ public class SPORE {
 					}
 					seq.add(pvid);
 				}
-				TestCases tc = new TestCases(countTest - 1, u, targetV, seq);
+				//TestCases tc = new TestCases(countTest - 1, u, targetV, seq);
+				// add time by lyh
+				TestCases tc = new TestCases(countTest - 1, u, t, targetV, seq);
 				this.test_cases.add(tc);
 			}
 			ThreadPoolExecutor executor = new ThreadPoolExecutor(maxthreads, maxthreads, 1, TimeUnit.SECONDS,
@@ -967,12 +1017,13 @@ public class SPORE {
 
 	public void train() {
 		int it = 0;
+		this.qnm.shutUp();
 		try {
 			OutputStreamWriter os = data_storage.file_handle_add(this.outputPath + "log.txt");
 			while (it < this.ITERATIONS) {
 				System.out.println("the " + it + "'s iteration.......");
 				long begintime = System.currentTimeMillis();
-				this.qnm.shutUp();
+				
 				if (it % 5 == 0) {
 				    
 					os.write("the " + it + "'s iteration......." + "\n");
@@ -984,10 +1035,12 @@ public class SPORE {
 					os.flush();
 					this.updateThetaUser();
 					
+					os.write("update theta time" + "\n");
+					os.flush();
+					this.updateThetaTime();
+					
 					os.write("update theta pre" + "\n");
 					os.flush();
-					// this.updateThetaNative();
-					// this.updateThetaPre();
 					this.updateThetaPreSingleP();
 					
 					os.write("update theta phi0" + "\n");
@@ -1066,7 +1119,19 @@ public class SPORE {
 			}
 			oswpf.flush();
 			oswpf.close();
-
+			
+			String timeDis_file = base_path + "timeDis.txt";
+			oswpf = data_storage.file_handle(timeDis_file);
+			oswpf.write(T+","+K + "\n");
+			for (int t=0; t<T; t++) {
+				for (int z = 0; z < K; z++) {
+					oswpf.write(this.thetatime[t][z] + ",");
+				}
+				oswpf.write("\n");
+			}
+			oswpf.flush();
+			oswpf.close();
+			
 			String thetauser_file = base_path + "userTopicDis.txt";
 			oswpf = data_storage.file_handle(thetauser_file);
 			oswpf.write(U + "," + K + "\n");
@@ -1273,6 +1338,20 @@ public class SPORE {
 				terms = str.split(",");
 				for (int z = 0; z < K; z++) {
 					this.thetauser[u][z] = Double.parseDouble(terms[z]);
+				}
+			}
+			br.close();
+			
+			
+			//add time by lyh
+			String timeDis_file = base_path + "timeDis.txt";
+			br = data_storage.file_handle_read(timeDis_file);
+			br.readLine();
+			for (int t=0; t<T; t++) {
+				str = br.readLine();
+				terms = str.split(",");
+				for (int z = 0; z < K; z++) {
+					this.thetatime[t][z] =  Double.parseDouble(terms[z]);
 				}
 			}
 			br.close();
@@ -1500,6 +1579,27 @@ public class SPORE {
 		}
 	}
 
+	public double inferAlpha(int u, int t, int z, ArrayList<Integer> seq) {
+	// public double inferAlpha(int u, int z, ArrayList<Integer> seq) {
+		double n = this.inferAlphaN(u, t, z, seq);
+		double d = 0;
+		for (int zz = 0; zz < Paras.K; zz++) {
+			d += this.inferAlphaN(u, t, zz, seq);
+		}
+		return n / d;
+	}
+
+//	public double inferAlphaN(int u, int z, ArrayList<Integer> seq) {
+	public double inferAlphaN(int u, int t, int z, ArrayList<Integer> seq) {
+		double exp = 0;
+		exp += (this.theta0[z] + this.thetauser[u][z]+this.thetatime[t][z]);
+		// exp += (this.theta0[z] + this.thetauser[u][z]);
+		for (int pvid : seq) {
+			exp += this.thetapre[pvid][z];
+		}
+		return Math.exp(exp);
+	}
+
 	// public double inferAlpha(int u, int l, int z, ArrayList<Integer> seq) {
 	public double inferAlpha(int u, int z, ArrayList<Integer> seq) {
 		double n = this.inferAlphaN(u, z, seq);
@@ -1557,21 +1657,17 @@ public class SPORE {
 		long begintime = System.currentTimeMillis();
 //		sp.initializeCount();
 //		sp.train();
-//		sp.preInfer();
-		sp.lyh_make_perinfer();
+//		sp.lyh_make_perinfer();
 //		sp.output_model();
 		
     	sp.read_model();
 //    	sp.lyh_make_perinfer("data/" + Paras.dataset + "/train_4.txt");
-//		sp.readFzvs();
-		String testFile = "data/" + Paras.dataset + "/test_4.txt";
-		sp.recommend_baseAll(testFile);
+		sp.readFzvs();
+		String testFile = "data/" + Paras.dataset + "/test_5.txt";
 		for (Paras.k = 20; Paras.k >= 2; Paras.k = Paras.k - 2) {
-			sp.recommend(testFile);
-			sp.recommend_baseUnvisited(testFile);
 			sp.recommend_baseAll(testFile);
 		}
-        sp.output_query_vectors(testFile);
+//        sp.output_query_vectors(testFile);
 		
 		long duration = System.currentTimeMillis() - begintime;
 		System.out.println(sp.formatDuring(duration));

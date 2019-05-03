@@ -105,14 +105,14 @@ public class DiffFunctionThetaPre implements DiffFunction {
 			UserProfile up=sp.user_items.get(u);
 			int j=p.getSec();
 			int z = up.getZ(j);
-//			int l=up.getL(j);
+			int t=up.getT(j);
 			ArrayList<Integer> seq=up.getSeq(j);
 			double alphad = 0;
 			double alphan = 0;
 			double[] alphans = new double[Paras.K];
 			for (int zz = 0; zz < Paras.K; zz++) {
-				double alphant = this.getAlphaN(u, zz, seq);
-//				double alphant = this.getAlphaN(u, zz,seq,l);
+//				double alphant = this.getAlphaN(u, zz, seq);
+				double alphant = this.getAlphaN(u, zz,seq,t);
 				alphans[zz] = alphant;
 				if (zz == z) {
 					alphan = alphant;
@@ -125,13 +125,13 @@ public class DiffFunctionThetaPre implements DiffFunction {
 		}
 	}
 
-	public double getAlphaN(int u, int z, ArrayList<Integer> seq) {
-//		public double getAlphaN(int u, int z, ArrayList<Integer> seq, int l) {
+//	public double getAlphaN(int u, int z, ArrayList<Integer> seq) {
+	public double getAlphaN(int u, int z, ArrayList<Integer> seq, int t) {
 		double alphan = 0;
 		// infer alphan
 		double exp = 0;
-		exp += (sp.theta0[z] + sp.thetauser[u][z]);
-//		exp += (sp.theta0[z] + sp.thetauser[u][z]+sp.thetanative[l][z]);
+//		exp += (sp.theta0[z] + sp.thetauser[u][z]);
+		exp += (sp.theta0[z] + sp.thetauser[u][z]+sp.thetatime[t][z]);
 		for(int pv:seq){
 			if(pv==v)
 				exp+=this.thetapre[z];

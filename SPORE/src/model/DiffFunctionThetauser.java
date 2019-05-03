@@ -93,14 +93,14 @@ public class DiffFunctionThetauser implements DiffFunction {
 		int size=up.getSize();
 		for (int v=0;v<size;v++) {
 			int z = up.getZ(v);
-//			int l = up.getL(v);
+			int t = up.getT(v);
 			ArrayList<Integer> seq=up.getSeq(v);
 			double alphad = 0;
 			double alphan = 0;
 			double[] alphans = new double[Paras.K];
 			for (int zz = 0; zz < Paras.K; zz++) {
-//				double alphant = this.getAlphaN(l, zz,seq);
-				double alphant = this.getAlphaN(zz,seq);
+//				double alphant = this.getAlphaN(zz,seq);
+				double alphant = this.getAlphaN(zz,seq, t);
 				alphans[zz] = alphant;
 				if (zz == z) {
 					alphan = alphant;
@@ -113,18 +113,17 @@ public class DiffFunctionThetauser implements DiffFunction {
 			// GeoGM.getGM().user_items.get(u).setAlphad(v, alphad);
 		}
 	}
-
-	public double getAlphaN(int z, ArrayList<Integer> seq) {
-//		public double getAlphaN(int l, int z, ArrayList<Integer> seq) {
+	public double getAlphaN(int z, ArrayList<Integer> seq, int t) {
 		double alphan = 0;
 		// infer alphan
 		double exp = 0;
-//		exp += (sp.theta0[z] + thetauser[z]+sp.thetanative[l][z]);
-		exp += (sp.theta0[z] + thetauser[z]);
+//		exp += (sp.theta0[z] + thetauser[z]);
+		exp += (sp.theta0[z] + thetauser[z] + sp.thetatime[t][z]);
 		for(int pv:seq){
 			exp+=sp.thetapre[pv][z];
 		}
 		alphan = Math.exp(exp);
 		return alphan;
 	}
+
 }
